@@ -13,7 +13,7 @@ GROUP BY segment_id, platform_id
 
 
 
-SELECT descriptions.name as description, platforms.name as platform, sum(main.votes)
+SELECT descriptions.name as description, platforms.name as platform, sum(main.votes) AS total_votes
 , sum(main.votes) / votessum.segmsum * 100 as perc
 FROM main
 LEFT JOIN descriptions ON descriptions.id = main.description_id
