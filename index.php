@@ -5,9 +5,12 @@ if ($mysqli -> connect_errno) {
   die('Could not connect to database.');
 }
 
+// name of first column
 $column = null;
+// next link to follow 
 $nextLink = null;
 
+// parse query string
 if (isset($_GET['segment'])) {
 	$column = 'description';
 	$nextLink = 'description';
@@ -62,8 +65,10 @@ if (isset($_GET['segment'])) {
 }
 $mysqli -> close();
 
+//get result out of query
 $results = mysqli_fetch_all($sql, MYSQLI_ASSOC);
 
+// array to use in javascript for pie chart
 $arr = [];
 foreach($results as $key => $value)
 	$arr[$value[$column]][$value['platform']] = $value['total_votes']
@@ -78,7 +83,6 @@ foreach($results as $key => $value)
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="./bootstrap.min.css">
-	<script src="./bootstrap.bundle.min.js"></script>
 	<script src="./anychart-core.min.js"></script>
 	<script src="./anychart-pie.min.js"></script>
 	<title>Picnic test for Ilia Dzidzishvili</title>
@@ -139,15 +143,19 @@ foreach($results as $key => $value)
 	</div>
 
 	<script>
-		anychart.onDocumentReady(function() {			
+		anychart.onDocumentReady(function() {
+			// get php array in js
 			var obj = <?php echo json_encode($arr); ?>;
+			// draw chart in designated div in table
 			for (const key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					obj2 = obj[key]
+					// array for pie chart
 					var data = [];
 					for (const k in obj2) {
 						data.push({x:k, value:obj2[k]});
 					}
+					//draw chart
 					var chart = anychart.pie();
 					chart.data(data);
 					chart.container(`chart-${key.toLowerCase()}`);
