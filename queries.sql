@@ -21,7 +21,7 @@ LEFT JOIN platforms ON platforms.id = main.platform_id
 LEFT JOIN (SELECT description_id descrid, sum(main.votes) segmsum
 					 FROM main
 					 WHERE segment_id = 3
-					 GROUP BY description_id) AS votessum ON segment_id = votessum.descrid
+					 GROUP BY description_id) AS votessum ON main.description_id = votessum.descrid
 WHERE segment_id = 3
 GROUP BY description_id, platform_id
 
